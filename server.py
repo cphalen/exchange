@@ -5,7 +5,7 @@ import websockets
 
 from orderbook import Order, OrderBook, OrderBookMessage, Symbol
 
-hostname = os.environ.get("EXCHANGE_SERVER_HOSTNAME", "localhost")
+hostname = os.environ.get("EXCHANGE_SERVER_HOSTNAME", "127.0.0.1")
 port = os.environ.get("EXCHANGE_SERVER_PORT", 8765)
 symbol = os.environ.get("EXCHANGE_SERVER_SYMBOL", Symbol.BOND)
 debug = os.environ.get("EXCHANGE_SERVER_DEBUG", True)

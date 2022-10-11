@@ -1,0 +1,28 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress
+spec:
+  rules:
+    - host: "192.168.1.214"
+      http:
+        paths:
+          - path: "/bond"
+            pathType: Prefix
+            backend:
+              service:
+                name: exchange-bond
+                port:
+                  number: 8765
+          - path: "/etf"
+            pathType: Prefix
+            backend:
+              service:
+                name: exchange-etf
+                port:
+                  number: 8765
+  tls:
+    - hosts:
+        - "192.168.1.214"
+      secretName: PENNKEY-cis188-org-tls
