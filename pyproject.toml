@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "exchange"
+version = "0.1.0"
+description = "Single-threaded exchange for PennETC implementing a simple two-sided market"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+black = "^22.8.0"
+websockets = "^10.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
