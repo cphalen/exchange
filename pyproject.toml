@@ -1,14 +1,15 @@
 [tool.poetry]
 name = "exchange"
 version = "0.1.0"
-description = "Single-threaded exchange for PennETC implementing a simple two-sided market"
-authors = ["Your Name <you@example.com>"]
+description = "Single-threaded exchange implementing a simple two-sided market"
+authors = ["Annie Wang <anniwang@seas.upenn.edu>", "Atharva Kasar <akasar@seas.upenn.edu>", "Benjamin Demers <bndemers@seas.upenn.edu>", "Campbell Phalen <cphalen@seas.upenn.edu>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
 black = "^22.8.0"
 websockets = "^10.3"
+pytest = "^7.1.3"
 
 
 [build-system]

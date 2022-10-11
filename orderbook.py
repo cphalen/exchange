@@ -5,6 +5,7 @@ from queue import PriorityQueue
 from datetime import datetime
 from functools import total_ordering
 
+
 class Symbol(str, Enum):
     BOND = "BOND"
     ETF = "ETF"
@@ -97,7 +98,10 @@ class OrderBookMessage:
         return pickle.loads(message)
 
     def __str__(self, other):
-        return f"<OrderBookResponse ack={self.ack}, fill={self.fill}, error={self.error}>"
+        return (
+            f"<OrderBookResponse ack={self.ack}, fill={self.fill}, error={self.error}>"
+        )
+
 
 class OrderBook:
     def __init__(self, symbol: Symbol):
@@ -133,7 +137,6 @@ class OrderBook:
     def num_asks(self):
         return self.asks.size()
 
-
     def copy_bids_and_asks(self):
         bids_list = []
         asks_list = []
@@ -166,7 +169,13 @@ class OrderBook:
 
         width = 20
         bids, asks = self.copy_bids_and_asks()
-        res = f"{self.symbol} Order Book\n" + fill_line("", filler="-") + "|" + fill_line("", filler="-") + "\n"
+        res = (
+            f"{self.symbol} Order Book\n"
+            + fill_line("", filler="-")
+            + "|"
+            + fill_line("", filler="-")
+            + "\n"
+        )
 
         res += (
             fill_line(str(Direction.BUY)) + "|" + fill_line(str(Direction.SELL)) + "\n"

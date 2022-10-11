@@ -1,5 +1,7 @@
+import pytest
 import unittest
-from main import *
+from orderbook import *
+
 
 class OrderBookTest(unittest.TestCase):
     def setUp(self):
@@ -14,7 +16,7 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=16))
         self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=17))
 
-        self.assertEqual(self.ob.resolve_orders(), [])
+        assert self.ob.resolve_orders() == []
 
     def test_cross_equal_amounts(self):
         self.ob.add_order(Order(user=self.user, direction=Direction.BUY, amount=6))
@@ -24,14 +26,14 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=16))
         self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=17))
 
-        self.assertEqual(self.ob.resolve_orders(), [])
+        assert self.ob.resolve_orders() == []
 
         highest_bid = Order(user=self.user, direction=Direction.BUY, amount=12)
         lowest_ask = Order(user=self.user, direction=Direction.SELL, amount=12)
         self.ob.add_order(highest_bid)
         self.ob.add_order(lowest_ask)
 
-        self.assertEqual(self.ob.resolve_orders(), [highest_bid, lowest_ask])
+        assert self.ob.resolve_orders() == [highest_bid, lowest_ask]
 
     def test_cross_different_amounts(self):
         self.ob.add_order(Order(user=self.user, direction=Direction.BUY, amount=6))
@@ -39,14 +41,14 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=16))
         self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=17))
 
-        self.assertEqual(self.ob.resolve_orders(), [])
+        assert self.ob.resolve_orders() == []
 
         highest_bid = Order(user=self.user, direction=Direction.BUY, amount=11)
         lowest_ask = Order(user=self.user, direction=Direction.SELL, amount=10)
         self.ob.add_order(highest_bid)
         self.ob.add_order(lowest_ask)
 
-        self.assertEqual(self.ob.resolve_orders(), [highest_bid, lowest_ask])
+        assert self.ob.resolve_orders() == [highest_bid, lowest_ask]
 
     def test_multiple_crosses(self):
         self.ob.add_order(Order(user=self.user, direction=Direction.BUY, amount=6))
@@ -54,7 +56,7 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=16))
         self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=17))
 
-        self.assertEqual(self.ob.resolve_orders(), [])
+        assert self.ob.resolve_orders() == []
 
         second_highest_bid = Order(user=self.user, direction=Direction.BUY, amount=11)
         highest_bid = Order(user=self.user, direction=Direction.BUY, amount=12)
@@ -66,15 +68,12 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(lowest_ask)
         self.ob.add_order(second_lowest_ask)
 
-        self.assertEqual(
-            self.ob.resolve_orders(),
-            [
-                highest_bid,
-                lowest_ask,
-                second_highest_bid,
-                second_lowest_ask
-            ]
-        )
+        assert self.ob.resolve_orders() == [
+            highest_bid,
+            lowest_ask,
+            second_highest_bid,
+            second_lowest_ask,
+        ]
 
     def test_bid_time_priority(self):
         first_bid = Order(user=self.user, direction=Direction.BUY, amount=10)
@@ -85,7 +84,7 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(second_bid)
         self.ob.add_order(ask)
 
-        self.assertEqual(self.ob.resolve_orders(), [first_bid, ask])
+        assert self.ob.resolve_orders() == [first_bid, ask]
 
     def test_ask_time_priority(self):
         bid = Order(user=self.user, direction=Direction.BUY, amount=10)
@@ -96,7 +95,7 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(first_ask)
         self.ob.add_order(second_ask)
 
-        self.assertEqual(self.ob.resolve_orders(), [bid, first_ask])
+        assert self.ob.resolve_orders() == [bid, first_ask]
 
 
 if __name__ == "__main__":

@@ -1,11 +1,12 @@
 import asyncio
 import websockets
 import os
-from main import Symbol, Order, OrderBook, OrderBookMessage
+from orderbook import Symbol, Order, OrderBook, OrderBookMessage
 
 hostname = os.environ.get("EXCHANGE_SERVER_HOSTNAME", "localhost")
 port = os.environ.get("EXCHANGE_SERVER_PORT", 8765)
 debug = os.environ.get("EXCHANGE_SERVER_DEBUG", True)
+
 
 async def marshal_order(websocket):
     async for message in websocket:
@@ -16,7 +17,9 @@ async def marshal_order(websocket):
         # try resolving the book
         fills = ob.resolve_orders()
         for fill in fills:
-            await websocket.send(OrderBookMessage.serialize(OrderBookMessage.fill(fill)))
+            await websocket.send(
+                OrderBookMessage.serialize(OrderBookMessage.fill(fill))
+            )
 
         # if debug print order book
         if debug:
@@ -27,6 +30,7 @@ async def listen():
     print(f"Running exchange server on {hostname}:{port}")
     async with websockets.serve(marshal_order, hostname, port):
         await asyncio.Future()
+
 
 ob = OrderBook(symbol=Symbol.BOND)
 asyncio.run(listen())
