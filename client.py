@@ -1,7 +1,8 @@
-import asyncio
-import websockets
 import os
-from orderbook import Order, OrderBook, OrderBookMessage
+
+import websockets
+
+from orderbook import Order, OrderBookMessage
 
 hostname = os.environ.get("EXCHANGE_SERVER_HOSTNAME", "localhost")
 port = os.environ.get("EXCHANGE_SERVER_PORT", 8765)

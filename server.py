@@ -1,7 +1,9 @@
 import asyncio
-import websockets
 import os
-from orderbook import Symbol, Order, OrderBook, OrderBookMessage
+
+import websockets
+
+from orderbook import Order, OrderBook, OrderBookMessage, Symbol
 
 hostname = os.environ.get("EXCHANGE_SERVER_HOSTNAME", "localhost")
 port = os.environ.get("EXCHANGE_SERVER_PORT", 8765)
@@ -12,7 +14,9 @@ async def marshal_order(websocket):
     async for message in websocket:
         # add order to order book and send response
         ob.add_order(Order.deserialize(message))
-        await websocket.send(OrderBookMessage.serialize(OrderBookMessage.ack()))
+        await websocket.send(
+            OrderBookMessage.serialize(OrderBookMessage.ack())
+        )
 
         # try resolving the book
         fills = ob.resolve_orders()

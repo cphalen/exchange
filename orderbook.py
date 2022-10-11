@@ -1,9 +1,8 @@
-from enum import Enum
 import pickle
-from copy import copy
-from queue import PriorityQueue
 from datetime import datetime
+from enum import Enum
 from functools import total_ordering
+from queue import PriorityQueue
 
 
 class Symbol(str, Enum):
@@ -68,7 +67,10 @@ class Order:
             return self.signed_amount() < other.signed_amount()
 
     def __str__(self, other):
-        return f"<Order direction={self.direction}, amount={self.amount}, timestamp={self.timestamp}>"
+        return (
+            f"<Order direction={self.direction}, amount={self.amount},"
+            f" timestamp={self.timestamp}>"
+        )
 
 
 class OrderBookMessage:
@@ -99,7 +101,8 @@ class OrderBookMessage:
 
     def __str__(self, other):
         return (
-            f"<OrderBookResponse ack={self.ack}, fill={self.fill}, error={self.error}>"
+            f"<OrderBookResponse ack={self.ack}, fill={self.fill},"
+            f" error={self.error}>"
         )
 
 
@@ -178,9 +181,14 @@ class OrderBook:
         )
 
         res += (
-            fill_line(str(Direction.BUY)) + "|" + fill_line(str(Direction.SELL)) + "\n"
+            fill_line(str(Direction.BUY))
+            + "|"
+            + fill_line(str(Direction.SELL))
+            + "\n"
         )
-        res += fill_line("", filler="-") + "|" + fill_line("", filler="-") + "\n"
+        res += (
+            fill_line("", filler="-") + "|" + fill_line("", filler="-") + "\n"
+        )
 
         while not bids.empty() or not asks.empty():
             if not bids.empty():
