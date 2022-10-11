@@ -2,26 +2,6 @@
 
 The exchange follows a client-server model using websockets to communicate between the two. There is some shared code in `orderbook.py` between the client and server (to keep serialization and deserialization consistent).
 
-## Files
-
-```
-.
-├── .github
-│   └── workflows
-│       └── build-and-test.yaml
-├── .gitignore
-├── README.md
-├── client.py
-├── orderbook.py
-├── poetry.lock
-├── pyproject.toml
-├── server.py
-├── test
-│   └── orderbook_test.py
-└── util
-    └── send_order.py
-```
-
 ## Development
 
 The code uses [poetry](https://python-poetry.org/) for package management, once installed the packages can be downloaded with
