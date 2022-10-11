@@ -10,9 +10,7 @@ if __name__ == "__main__":
         description="Send orders to the exchange from the command line"
     )
 
-    parser.add_argument(
-        "--direction", type=str, help="Direction or order (BUY/SELL)"
-    )
+    parser.add_argument("--direction", type=str, help="Direction or order (BUY/SELL)")
     parser.add_argument(
         "--amount",
         type=float,

@@ -10,13 +10,12 @@ port = os.environ.get("EXCHANGE_SERVER_PORT", 8765)
 symbol = os.environ.get("EXCHANGE_SERVER_SYMBOL", Symbol.BOND)
 debug = os.environ.get("EXCHANGE_SERVER_DEBUG", True)
 
+
 async def marshal_order(websocket):
     async for message in websocket:
         # add order to order book and send response
         ob.add_order(Order.deserialize(message))
-        await websocket.send(
-            OrderBookMessage.serialize(OrderBookMessage.ack())
-        )
+        await websocket.send(OrderBookMessage.serialize(OrderBookMessage.ack()))
 
         # try resolving the book
         fills = ob.resolve_orders()
