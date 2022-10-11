@@ -9,22 +9,46 @@ class OrderBookTest(unittest.TestCase):
         self.user = "test_user"
 
     def test_no_cross(self):
-        self.ob.add_order(Order(user=self.user, direction=Direction.BUY, amount=6))
-        self.ob.add_order(Order(user=self.user, direction=Direction.BUY, amount=8))
-        self.ob.add_order(Order(user=self.user, direction=Direction.BUY, amount=11))
-        self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=13))
-        self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=16))
-        self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=17))
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.BUY, amount=6)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.BUY, amount=8)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.BUY, amount=11)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.SELL, amount=13)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.SELL, amount=16)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.SELL, amount=17)
+        )
 
         assert self.ob.resolve_orders() == []
 
     def test_cross_equal_amounts(self):
-        self.ob.add_order(Order(user=self.user, direction=Direction.BUY, amount=6))
-        self.ob.add_order(Order(user=self.user, direction=Direction.BUY, amount=8))
-        self.ob.add_order(Order(user=self.user, direction=Direction.BUY, amount=11))
-        self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=13))
-        self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=16))
-        self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=17))
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.BUY, amount=6)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.BUY, amount=8)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.BUY, amount=11)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.SELL, amount=13)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.SELL, amount=16)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.SELL, amount=17)
+        )
 
         assert self.ob.resolve_orders() == []
 
@@ -36,10 +60,18 @@ class OrderBookTest(unittest.TestCase):
         assert self.ob.resolve_orders() == [highest_bid, lowest_ask]
 
     def test_cross_different_amounts(self):
-        self.ob.add_order(Order(user=self.user, direction=Direction.BUY, amount=6))
-        self.ob.add_order(Order(user=self.user, direction=Direction.BUY, amount=8))
-        self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=16))
-        self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=17))
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.BUY, amount=6)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.BUY, amount=8)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.SELL, amount=16)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.SELL, amount=17)
+        )
 
         assert self.ob.resolve_orders() == []
 
@@ -51,17 +83,29 @@ class OrderBookTest(unittest.TestCase):
         assert self.ob.resolve_orders() == [highest_bid, lowest_ask]
 
     def test_multiple_crosses(self):
-        self.ob.add_order(Order(user=self.user, direction=Direction.BUY, amount=6))
-        self.ob.add_order(Order(user=self.user, direction=Direction.BUY, amount=8))
-        self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=16))
-        self.ob.add_order(Order(user=self.user, direction=Direction.SELL, amount=17))
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.BUY, amount=6)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.BUY, amount=8)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.SELL, amount=16)
+        )
+        self.ob.add_order(
+            Order(user=self.user, direction=Direction.SELL, amount=17)
+        )
 
         assert self.ob.resolve_orders() == []
 
-        second_highest_bid = Order(user=self.user, direction=Direction.BUY, amount=11)
+        second_highest_bid = Order(
+            user=self.user, direction=Direction.BUY, amount=11
+        )
         highest_bid = Order(user=self.user, direction=Direction.BUY, amount=12)
         lowest_ask = Order(user=self.user, direction=Direction.SELL, amount=10)
-        second_lowest_ask = Order(user=self.user, direction=Direction.SELL, amount=11)
+        second_lowest_ask = Order(
+            user=self.user, direction=Direction.SELL, amount=11
+        )
 
         self.ob.add_order(second_highest_bid)
         self.ob.add_order(highest_bid)

@@ -181,9 +181,14 @@ class OrderBook:
         )
 
         res += (
-            fill_line(str(Direction.BUY)) + "|" + fill_line(str(Direction.SELL)) + "\n"
+            fill_line(str(Direction.BUY))
+            + "|"
+            + fill_line(str(Direction.SELL))
+            + "\n"
         )
-        res += fill_line("", filler="-") + "|" + fill_line("", filler="-") + "\n"
+        res += (
+            fill_line("", filler="-") + "|" + fill_line("", filler="-") + "\n"
+        )
 
         while not bids.empty() or not asks.empty():
             if not bids.empty():

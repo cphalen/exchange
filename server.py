@@ -15,7 +15,9 @@ async def marshal_order(websocket):
     async for message in websocket:
         # add order to order book and send response
         ob.add_order(Order.deserialize(message))
-        await websocket.send(OrderBookMessage.serialize(OrderBookMessage.ack()))
+        await websocket.send(
+            OrderBookMessage.serialize(OrderBookMessage.ack())
+        )
 
         # try resolving the book
         fills = ob.resolve_orders()
