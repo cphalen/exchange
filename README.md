@@ -4,7 +4,12 @@ The exchange follows a client-server model using websockets to communicate betwe
 
 ## Files
 
+```
 .
+├── .github
+│   └── workflows
+│       └── build-and-test.yaml
+├── .gitignore
 ├── README.md
 ├── client.py
 ├── orderbook.py
@@ -15,6 +20,7 @@ The exchange follows a client-server model using websockets to communicate betwe
 │   └── orderbook_test.py
 └── util
     └── send_order.py
+```
 
 ## Development
 
@@ -45,3 +51,4 @@ A couple ideas for next steps:
 - [ ] Support multiple exchanges of different instruments (right now there is only one called `BOND`)
 - [ ] Efficiency boosts across the board (I think `pickle` serialization and deserialization could be a good place to start)
 - [ ] Stress testing to see how many orders per minute we can handle
+- [ ] Debug issue with `deepcopy` so we can get rid of the `copy_bids_and_asks` function written for `OrderBook`
