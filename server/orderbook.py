@@ -3,11 +3,7 @@ from datetime import datetime
 from enum import Enum
 from functools import total_ordering
 from queue import PriorityQueue
-
-
-class Symbol(str, Enum):
-    BOND = "BOND"
-    ETF = "ETF"
+from symbol.symbol import Symbol
 
 
 class Direction(str, Enum):
@@ -28,7 +24,14 @@ class Order:
                   you would be willing to sell.
     """
 
+    def mint_order_id(self) -> int:
+        order_id = self.order_id_counter
+        self.order_id_counter += 1
+        return order_id
+
     def __init__(self, user: str, direction: Direction, amount: float) -> None:
+        self.order_id_counter = 0
+        self.order_id = self.mint_order_id()
         self.user = user
         self.direction = direction
         self.amount = amount
@@ -40,14 +43,6 @@ class Order:
                 return (-1) * self.amount
             case Direction.SELL:
                 return self.amount
-
-    @staticmethod
-    def serialize(order):
-        return pickle.dumps(order)
-
-    @staticmethod
-    def deserialize(message):
-        return pickle.loads(message)
 
     def __eq__(self, other) -> bool:
         if self.direction != other.direction:
@@ -73,44 +68,12 @@ class Order:
         )
 
 
-class OrderBookMessage:
-    def __init__(self, ack, fill, error):
-        self.ack = ack
-        self.error = error
-        self.fill = fill
-
-    @staticmethod
-    def ack():
-        return OrderBookMessage(True, None, None)
-
-    @staticmethod
-    def fill(fill):
-        return OrderBookMessage(None, fill, None)
-
-    @staticmethod
-    def error(error):
-        return OrderBookMessage(None, None, error)
-
-    @staticmethod
-    def serialize(order_response):
-        return pickle.dumps(order_response)
-
-    @staticmethod
-    def deserialize(message):
-        return pickle.loads(message)
-
-    def __str__(self, other):
-        return (
-            f"<OrderBookResponse ack={self.ack}, fill={self.fill},"
-            f" error={self.error}>"
-        )
-
-
 class OrderBook:
     def __init__(self, symbol: Symbol):
         self.symbol = symbol
         self.bids = PriorityQueue()
         self.asks = PriorityQueue()
+        self.balances = {}
 
     def add_order(self, order):
         match order.direction:
@@ -119,6 +82,9 @@ class OrderBook:
             case Direction.SELL:
                 self.asks.put(order)
 
+    def get_payout(self, user: str):
+        return self.balances.get(user, 0)
+
     def resolve_orders(self):
         orders_filled = []
         while not self.bids.empty() and not self.asks.empty():
@@ -126,6 +92,19 @@ class OrderBook:
             lowest_ask = self.asks.get()
 
             if highest_bid.amount >= lowest_ask.amount:
+                # bidding user gains profit of symbol value minus amount paid
+                self.balances[highest_bid.user] = (
+                    self.balances.get(highest_bid.user, 0)
+                    + self.symbol.true_value()
+                    - highest_bid.amount
+                )
+                # asking user gains profit of amount sold for minus symbol value
+                self.balances[lowest_ask.user] = (
+                    self.balances.get(lowest_ask.user, 0)
+                    + lowest_ask.amount
+                    - self.symbol.true_value()
+                )
+
                 orders_filled.append(highest_bid)
                 orders_filled.append(lowest_ask)
             else:
@@ -181,14 +160,9 @@ class OrderBook:
         )
 
         res += (
-            fill_line(str(Direction.BUY))
-            + "|"
-            + fill_line(str(Direction.SELL))
-            + "\n"
+            fill_line(str(Direction.BUY)) + "|" + fill_line(str(Direction.SELL)) + "\n"
         )
-        res += (
-            fill_line("", filler="-") + "|" + fill_line("", filler="-") + "\n"
-        )
+        res += fill_line("", filler="-") + "|" + fill_line("", filler="-") + "\n"
 
         while not bids.empty() or not asks.empty():
             if not bids.empty():

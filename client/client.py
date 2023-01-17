@@ -1,11 +1,11 @@
 import os
 
 import websockets
-
 from orderbook import Order, OrderBookMessage
 
 hostname = os.environ.get("EXCHANGE_SERVER_HOSTNAME", "localhost")
 port = os.environ.get("EXCHANGE_SERVER_PORT", 8765)
+username = os.environ.get("EXCHANGE_USERNAME", "user")
 
 
 def get_websocket_url():
@@ -17,4 +17,4 @@ async def send_order(order):
         # send order
         await websocket.send(Order.serialize(order))
         # await response
-        return OrderBookMessage.deserialize(await websocket.recv())
+        return ExchangeMessage.deserialize(await websocket.recv())

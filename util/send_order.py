@@ -2,8 +2,9 @@ import argparse
 import asyncio
 import getpass
 
-from client import send_order
 from orderbook import Order
+
+from client import send_order
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
