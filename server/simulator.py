@@ -1,7 +1,8 @@
-import time
 import os
+import time
 
 debug = os.environ.get("EXCHANGE_SERVER_DEBUG", True)
+
 
 class Simulator:
     def __init__(self, username, bot, ob):

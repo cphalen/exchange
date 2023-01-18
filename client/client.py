@@ -1,7 +1,9 @@
-import os
-import websockets
 import asyncio
+import os
 import pickle
+
+import websockets
+
 from client.trading_actions import TradingActions
 from client.trading_bot import TradingBot
 
@@ -17,11 +19,12 @@ def get_websocket_url():
 async def send_trading_bot():
     async with websockets.connect(get_websocket_url()) as websocket:
         # send order
-        payload = { "bot": TradingBot, "actions": TradingActions }
+        payload = {"bot": TradingBot, "actions": TradingActions}
         msg = pickle.dumps(payload)
         await websocket.send(msg)
         # await response
         return await websocket.recv()
+
 
 if __name__ == "__main__":
     asyncio.run(send_trading_bot())

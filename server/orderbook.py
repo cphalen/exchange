@@ -1,4 +1,3 @@
-import pickle
 from datetime import datetime
 from enum import Enum
 from functools import total_ordering
@@ -23,7 +22,6 @@ class Order:
                   you would be willing to buy, or the lowest amount for which
                   you would be willing to sell.
     """
-
 
     def __init__(self, user: str, direction: Direction, amount: float) -> None:
         self.user = user
@@ -93,13 +91,13 @@ class OrderBook:
             lowest_ask = self.asks.get()
 
             if highest_bid.amount >= lowest_ask.amount:
-                # bidding user gains profit of symbol value minus amount paid
+                # bidding user gains profit of symbol value minus buy amount
                 self.balances[highest_bid.user] = (
                     self.balances.get(highest_bid.user, 0)
                     + self.symbol.true_value()
                     - highest_bid.amount
                 )
-                # asking user gains profit of amount sold for minus symbol value
+                # asking user gains profit of sell amount minus symbol value
                 self.balances[lowest_ask.user] = (
                     self.balances.get(lowest_ask.user, 0)
                     + lowest_ask.amount
@@ -161,9 +159,14 @@ class OrderBook:
         )
 
         res += (
-            fill_line(str(Direction.BUY)) + "|" + fill_line(str(Direction.SELL)) + "\n"
+            fill_line(str(Direction.BUY))
+            + "|"
+            + fill_line(str(Direction.SELL))
+            + "\n"
         )
-        res += fill_line("", filler="-") + "|" + fill_line("", filler="-") + "\n"
+        res += (
+            fill_line("", filler="-") + "|" + fill_line("", filler="-") + "\n"
+        )
 
         while not bids.empty() or not asks.empty():
             if not bids.empty():

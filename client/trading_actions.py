@@ -7,14 +7,16 @@ class TradingActions:
 
     def add_buy(amount: int) -> int:
         """
-        Creates a buy order on the orderbook (i.e. you are buying at a certain price).
-        This function returns the order_id of the new buy order that is created.
+        Creates a buy order on the orderbook (i.e. you are buying at a certain
+        price). This function returns the order_id of the new buy order that is
+        created.
         """
         pass
 
     def add_sell():
         """
-        Creates a sell order on the orderbook (i.e. you are selling at a certain price).
-        This function returns the order_id of the new sell order that is created.
+        Creates a sell order on the orderbook (i.e. you are selling at a
+        certain price). This function returns the order_id of the new sell
+        order that is created.
         """
         pass

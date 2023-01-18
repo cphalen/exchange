@@ -5,7 +5,6 @@ from symbol.symbol import symbol_of_string
 
 import websockets
 
-from message.request import ExchangeRequest
 from server.orderbook import Direction, Order, OrderBook
 from server.simulator import Simulator
 
@@ -17,13 +16,16 @@ debug = os.environ.get("EXCHANGE_SERVER_DEBUG", True)
 ob = OrderBook(symbol=symbol)
 username = "user"
 
+
 def add_buy(amount: int) -> int:
     order = Order(username, Direction.BUY, amount)
     return ob.add_order(order)
 
+
 def add_sell(amount: int) -> int:
     order = Order(username, Direction.SELL, amount)
     return ob.add_order(order)
+
 
 async def handle_request(websocket):
     async for msg in websocket:
@@ -38,9 +40,11 @@ async def handle_request(websocket):
         sim = Simulator(username, bot, ob)
         sim.run()
 
+
 async def listen():
     print(f"Running exchange server on {hostname}:{port}")
     async with websockets.serve(handle_request, hostname, port):
         await asyncio.Future()
+
 
 asyncio.run(listen())
