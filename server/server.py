@@ -15,6 +15,7 @@ debug = os.environ.get("EXCHANGE_SERVER_DEBUG", True)
 
 username = "user"
 
+
 async def handle_request(websocket):
     async for msg in websocket:
         # create orderbook and override functions
@@ -29,7 +30,7 @@ async def handle_request(websocket):
             order = Order(username, Direction.SELL, amount)
             ob.add_order(order)
 
-       # unpackage payload and overwrite dummy methods
+        # unpackage payload and overwrite dummy methods
         payload = pickle.loads(msg)
         bot = payload["bot"]
         actions = payload["actions"]

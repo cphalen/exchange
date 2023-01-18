@@ -1,10 +1,9 @@
 import numpy as np
 
-from symbol.symbol import Bond
 from server.orderbook import Direction, Order
 
-class Agent:
 
+class Agent:
     def __init__(self):
         self.username = "agent"
         self.order_limit = 1000
@@ -21,8 +20,8 @@ class Agent:
         else:
             return self.generate_sell()
 
-class BondAgent(Agent):
 
+class BondAgent(Agent):
     def generate_buy(self):
         direction = Direction.BUY
         amount = round(np.random.normal(loc=101, scale=2, size=None), 2)
@@ -32,6 +31,7 @@ class BondAgent(Agent):
         direction = Direction.SELL
         amount = round(np.random.normal(loc=99, scale=2, size=None), 2)
         return Order(self.username, direction, amount)
+
 
 def agent_of_symbol(symbol):
     match symbol.symbol_name():

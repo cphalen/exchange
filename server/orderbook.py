@@ -30,7 +30,6 @@ class Order:
         Order.order_id_counter += 1
         return order_id
 
-
     def __init__(self, user: str, direction: Direction, amount: float) -> None:
         self.order_id = Order.mint_order_id()
         self.user = user

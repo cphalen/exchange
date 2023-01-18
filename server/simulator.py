@@ -1,11 +1,12 @@
 import os
-import time
 from symbol.symbol import symbol_of_string
+
 from agent.agent import agent_of_symbol
 from server.orderbook import Direction
 
 debug = os.environ.get("EXCHANGE_SERVER_DEBUG", True)
 symbol = symbol_of_string(os.environ.get("EXCHANGE_SERVER_SYMBOL", "BOND"))
+
 
 class Simulator:
     def __init__(self, username, bot, ob):
@@ -38,7 +39,6 @@ class Simulator:
             self.bot.fill(fill["buy"].order_id, fill["sell"].order_id)
 
         return False
-
 
     def run(self):
         # call the player provided init callback function

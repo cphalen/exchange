@@ -58,7 +58,9 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(highest_bid)
         self.ob.add_order(lowest_ask)
 
-        assert self.ob.resolve_orders() == [{"buy": highest_bid, "sell": lowest_ask}]
+        assert self.ob.resolve_orders() == [
+            {"buy": highest_bid, "sell": lowest_ask}
+        ]
 
     def test_cross_different_amounts(self):
         self.ob.add_order(
@@ -81,7 +83,9 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(highest_bid)
         self.ob.add_order(lowest_ask)
 
-        assert self.ob.resolve_orders() == [{"buy": highest_bid, "sell": lowest_ask}]
+        assert self.ob.resolve_orders() == [
+            {"buy": highest_bid, "sell": lowest_ask}
+        ]
 
     def test_multiple_crosses(self):
         self.ob.add_order(
@@ -115,7 +119,7 @@ class OrderBookTest(unittest.TestCase):
 
         assert self.ob.resolve_orders() == [
             {"buy": highest_bid, "sell": lowest_ask},
-            {"buy": second_highest_bid, "sell": second_lowest_ask}
+            {"buy": second_highest_bid, "sell": second_lowest_ask},
         ]
 
     def test_bid_time_priority(self):
