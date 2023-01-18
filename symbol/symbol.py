@@ -14,8 +14,8 @@ class Bond(Symbol):
         return 100
 
 
-def of_string(s: str):
-    for symbol in SYMBOLS:
-        if symbol.symbol_name == s:
+def symbol_of_string(s: str):
+    for symbol in [Bond]:
+        if symbol.symbol_name() == s:
             return symbol
     raise ValueError("No such symbol")

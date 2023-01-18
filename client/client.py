@@ -1,7 +1,9 @@
 import os
-
 import websockets
-from orderbook import Order, OrderBookMessage
+import asyncio
+import pickle
+from client.trading_actions import TradingActions
+from client.trading_bot import TradingBot
 
 hostname = os.environ.get("EXCHANGE_SERVER_HOSTNAME", "localhost")
 port = os.environ.get("EXCHANGE_SERVER_PORT", 8765)
@@ -12,9 +14,14 @@ def get_websocket_url():
     return f"ws://{hostname}:{port}"
 
 
-async def send_order(order):
+async def send_trading_bot():
     async with websockets.connect(get_websocket_url()) as websocket:
         # send order
-        await websocket.send(Order.serialize(order))
+        payload = { "bot": TradingBot, "actions": TradingActions }
+        msg = pickle.dumps(payload)
+        await websocket.send(msg)
         # await response
-        return ExchangeMessage.deserialize(await websocket.recv())
+        return await websocket.recv()
+
+if __name__ == "__main__":
+    asyncio.run(send_trading_bot())

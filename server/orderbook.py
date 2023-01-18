@@ -24,14 +24,8 @@ class Order:
                   you would be willing to sell.
     """
 
-    def mint_order_id(self) -> int:
-        order_id = self.order_id_counter
-        self.order_id_counter += 1
-        return order_id
 
     def __init__(self, user: str, direction: Direction, amount: float) -> None:
-        self.order_id_counter = 0
-        self.order_id = self.mint_order_id()
         self.user = user
         self.direction = direction
         self.amount = amount
@@ -70,10 +64,16 @@ class Order:
 
 class OrderBook:
     def __init__(self, symbol: Symbol):
+        self.order_id_counter = 1
         self.symbol = symbol
         self.bids = PriorityQueue()
         self.asks = PriorityQueue()
         self.balances = {}
+
+    def mint_order_id(self) -> int:
+        order_id = self.order_id_counter
+        self.order_id_counter += 1
+        return order_id
 
     def add_order(self, order):
         match order.direction:
@@ -81,6 +81,7 @@ class OrderBook:
                 self.bids.put(order)
             case Direction.SELL:
                 self.asks.put(order)
+        return self.mint_order_id()
 
     def get_payout(self, user: str):
         return self.balances.get(user, 0)
