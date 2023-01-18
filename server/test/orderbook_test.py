@@ -58,7 +58,7 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(highest_bid)
         self.ob.add_order(lowest_ask)
 
-        assert self.ob.resolve_orders() == [highest_bid, lowest_ask]
+        assert self.ob.resolve_orders() == [{"buy": highest_bid, "sell": lowest_ask}]
 
     def test_cross_different_amounts(self):
         self.ob.add_order(
@@ -81,7 +81,7 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(highest_bid)
         self.ob.add_order(lowest_ask)
 
-        assert self.ob.resolve_orders() == [highest_bid, lowest_ask]
+        assert self.ob.resolve_orders() == [{"buy": highest_bid, "sell": lowest_ask}]
 
     def test_multiple_crosses(self):
         self.ob.add_order(
@@ -114,10 +114,8 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(second_lowest_ask)
 
         assert self.ob.resolve_orders() == [
-            highest_bid,
-            lowest_ask,
-            second_highest_bid,
-            second_lowest_ask,
+            {"buy": highest_bid, "sell": lowest_ask},
+            {"buy": second_highest_bid, "sell": second_lowest_ask}
         ]
 
     def test_bid_time_priority(self):
@@ -129,7 +127,7 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(second_bid)
         self.ob.add_order(ask)
 
-        assert self.ob.resolve_orders() == [first_bid, ask]
+        assert self.ob.resolve_orders() == [{"buy": first_bid, "sell": ask}]
 
     def test_ask_time_priority(self):
         bid = Order(user=self.user, direction=Direction.BUY, amount=10)
@@ -140,7 +138,15 @@ class OrderBookTest(unittest.TestCase):
         self.ob.add_order(first_ask)
         self.ob.add_order(second_ask)
 
-        assert self.ob.resolve_orders() == [bid, first_ask]
+        assert self.ob.resolve_orders() == [{"buy": bid, "sell": first_ask}]
+
+    def test_order_id_increment(self):
+        order_1 = Order(user=self.user, direction=Direction.BUY, amount=100)
+        order_2 = Order(user=self.user, direction=Direction.BUY, amount=110)
+        order_3 = Order(user=self.user, direction=Direction.SELL, amount=120)
+
+        assert order_2.order_id - order_1.order_id == 1
+        assert order_3.order_id - order_2.order_id == 1
 
 
 if __name__ == "__main__":

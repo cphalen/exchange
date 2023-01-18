@@ -13,23 +13,23 @@ port = os.environ.get("EXCHANGE_SERVER_PORT", 8765)
 symbol = symbol_of_string(os.environ.get("EXCHANGE_SERVER_SYMBOL", "BOND"))
 debug = os.environ.get("EXCHANGE_SERVER_DEBUG", True)
 
-ob = OrderBook(symbol=symbol)
 username = "user"
-
-
-def add_buy(amount: int) -> int:
-    order = Order(username, Direction.BUY, amount)
-    return ob.add_order(order)
-
-
-def add_sell(amount: int) -> int:
-    order = Order(username, Direction.SELL, amount)
-    return ob.add_order(order)
-
 
 async def handle_request(websocket):
     async for msg in websocket:
-        # unpackage payload and overwrite dummy methods
+        # create orderbook and override functions
+        ob = OrderBook(symbol=symbol)
+
+        def add_buy(amount: int) -> int:
+            order = Order(username, Direction.BUY, amount)
+            ob.add_order(order)
+            return order.order_id
+
+        def add_sell(amount: int) -> int:
+            order = Order(username, Direction.SELL, amount)
+            ob.add_order(order)
+
+       # unpackage payload and overwrite dummy methods
         payload = pickle.loads(msg)
         bot = payload["bot"]
         actions = payload["actions"]
@@ -38,7 +38,11 @@ async def handle_request(websocket):
 
         # create and run simulator
         sim = Simulator(username, bot, ob)
-        sim.run()
+        payout = sim.run()
+
+        # serialize and send response
+        response = pickle.dumps(payout)
+        await websocket.send(response)
 
 
 async def listen():

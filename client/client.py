@@ -18,12 +18,18 @@ def get_websocket_url():
 
 async def send_trading_bot():
     async with websockets.connect(get_websocket_url()) as websocket:
-        # send order
+        # serialize the trading bot
         payload = {"bot": TradingBot, "actions": TradingActions}
         msg = pickle.dumps(payload)
+
+        # send bot over the wire
         await websocket.send(msg)
-        # await response
-        return await websocket.recv()
+
+        # await and deserialize response
+        response = await websocket.recv()
+        payout = round(pickle.loads(response), 2)
+
+        print("Payout for simulation: ${:0.2f}".format(payout))
 
 
 if __name__ == "__main__":

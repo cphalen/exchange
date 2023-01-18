@@ -13,7 +13,7 @@ class TradingActions:
         """
         pass
 
-    def add_sell():
+    def add_sell(amount: int) -> int:
         """
         Creates a sell order on the orderbook (i.e. you are selling at a
         certain price). This function returns the order_id of the new sell

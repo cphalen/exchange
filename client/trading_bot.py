@@ -18,12 +18,17 @@ class TradingBot:
       - Using external Python packages in your code
     """
 
+    buy_id = None
+    sell_id = None
+
     def init() -> None:
         """
         This function is called by the simulation when the simulation begins.
         You can add any buy or sell orders that you want to exist on the
         orderbook at the beginning of the simulation.
         """
+        TradingBot.buy_id = TradingActions.add_buy(80)
+        TradingBot.sell_id = TradingActions.add_sell(120)
         pass
 
     def buy(order_id: int, amount: float) -> None:
@@ -33,7 +38,6 @@ class TradingBot:
         Your code should respond accordingly, now knowing that this buy order
         exists on the orderbook.
         """
-        TradingActions.add_buy(10)
         pass
 
     def sell(order_id: int, amount: float) -> None:
@@ -43,7 +47,6 @@ class TradingBot:
         orderbook. Your code should respond accordingly, now knowing that this
         sell order exists on the orderbook.
         """
-        TradingActions.add_sell(20)
         pass
 
     def fill(buy_order_id: int, sell_order_id: int) -> None:
@@ -55,4 +58,10 @@ class TradingBot:
         accordingly, now knowing that these orders no longer exist on the
         orderbook.
         """
+        if buy_order_id == TradingBot.buy_id:
+            TradingBot.buy_id = TradingActions.add_buy(80)
+
+        if sell_order_id == TradingBot.sell_id:
+            TradingBot.sell_id = TradingActions.add_sell(120)
+
         pass
