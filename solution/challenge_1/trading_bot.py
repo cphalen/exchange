@@ -1,4 +1,4 @@
-from client.trading_actions import TradingActions # noqa
+from solution.challenge_1.trading_actions import TradingActions
 
 
 class TradingBot:
@@ -18,13 +18,18 @@ class TradingBot:
       - Using external Python packages in your code
     """
 
+    def __init__(self) -> None:
+        self.buy_price = 99
+        self.sell_price = 101
+
     def open(self) -> None:
         """
         This function is called by the simulation when the simulation begins.
         You can add any buy or sell orders that you want to exist on the
         orderbook at the beginning of the simulation.
         """
-        pass
+        self.buy_id = TradingActions.add_buy(self.buy_price)
+        self.sell_id = TradingActions.add_sell(self.sell_price)
 
     def buy(self, order_id: int, amount: float) -> None:
         """
@@ -53,4 +58,8 @@ class TradingBot:
         accordingly, now knowing that these orders no longer exist on the
         orderbook.
         """
-        pass
+        if buy_order_id == self.buy_id:
+            self.buy_id = TradingActions.add_buy(self.buy_price)
+
+        if sell_order_id == self.sell_id:
+            self.sell_id = TradingActions.add_sell(self.sell_price)

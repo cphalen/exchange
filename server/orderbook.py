@@ -61,10 +61,10 @@ class Order:
         else:
             return self.signed_amount() < other.signed_amount()
 
-    def __str__(self, other):
+    def __str__(self):
         return (
             f"<Order direction={self.direction}, amount={self.amount},"
-            f" timestamp={self.timestamp}>"
+            f" timestamp={self.timestamp}, user={self.user}>"
         )
 
 

@@ -41,8 +41,8 @@ class Simulator:
         return False
 
     def run(self):
-        # call the player provided init callback function
-        self.bot.init()
+        # call the player provided open callback function
+        self.bot.open()
 
         # run simulation until we reach stalemate
         while not self.tick():

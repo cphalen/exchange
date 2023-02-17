@@ -4,8 +4,8 @@ import os
 import dill
 import websockets
 
-import client.trading_actions
-import client.trading_bot
+import solution.challenge_1.trading_actions
+import solution.challenge_1.trading_bot
 
 hostname = os.environ.get("EXCHANGE_SERVER_HOSTNAME", "localhost")
 port = os.environ.get("EXCHANGE_SERVER_PORT", 8765)
@@ -19,7 +19,10 @@ def get_websocket_url():
 async def send_trading_bot():
     async with websockets.connect(get_websocket_url()) as websocket:
         # serialize the trading bot
-        trading_modules = [client.trading_bot, client.trading_actions]
+        trading_modules = [
+            solution.challenge_1.trading_bot,
+            solution.challenge_1.trading_actions,
+        ]
         msg = dill.dumps(trading_modules)
 
         # send bot over the wire

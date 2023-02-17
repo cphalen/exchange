@@ -14,4 +14,4 @@ RUN poetry install
 COPY . .
 
 # start the server with parameters specified in environment variables
-CMD ["poetry", "run", "python", "server.py"]
+CMD ["poetry", "run", "python", "-m", "server.server"]

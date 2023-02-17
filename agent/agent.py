@@ -24,12 +24,12 @@ class Agent:
 class BondAgent(Agent):
     def generate_buy(self):
         direction = Direction.BUY
-        amount = round(np.random.normal(loc=101, scale=2, size=None), 2)
+        amount = round(np.random.normal(loc=100, scale=5, size=None), 2)
         return Order(self.username, direction, amount)
 
     def generate_sell(self):
         direction = Direction.SELL
-        amount = round(np.random.normal(loc=99, scale=2, size=None), 2)
+        amount = round(np.random.normal(loc=100, scale=5, size=None), 2)
         return Order(self.username, direction, amount)
 
 
