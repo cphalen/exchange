@@ -1,4 +1,4 @@
-from client.trading_actions import TradingActions # noqa
+from client.trading_actions import TradingActions  # noqa
 
 
 class TradingBot:
