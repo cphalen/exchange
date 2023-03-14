@@ -79,4 +79,6 @@ jobs:
           echo $SSH_KEY > key.pem
           chmod 500 key.pem
           ssh -o StrictHostKeyChecking=no -i "key.pem" ubuntu@$SSH_HOSTNAME "cd exchange && git pull && export IMAGE_TAG=${{ github.sha }} && cat k8s/* | envsubst | microk8s kubectl apply -f -"
-
+        env:
+          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+          SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
