@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: exchange
-          image: localhost:32000/exchange-server-local:v1
+          image: cphalen/exchange-server:${IMAGE_TAG}
           ports:
             - containerPort: 8765
           env:
