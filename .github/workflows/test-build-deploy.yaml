@@ -33,6 +33,11 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v1
 
+      - name: Test CI
+        run: echo "$SSH_KEY"
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+
       - name: Install poetry
         uses: Gr1N/setup-poetry@v7
 
