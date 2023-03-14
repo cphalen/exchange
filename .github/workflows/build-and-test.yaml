@@ -44,7 +44,6 @@ jobs:
     needs: [lint, test]
     name: Build and publish docker image
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
 
     steps:
       - name: Checkout code
@@ -65,6 +64,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          push: true
+          push: ${{ github.ref == 'refs/heads/main' }}
           tags: cphalen/exchange-server:${{ github.sha }}
 
