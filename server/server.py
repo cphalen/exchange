@@ -29,6 +29,7 @@ def dynamic_module_unload(module):
 
 async def handle_request(websocket):
     async for msg in websocket:
+        print("Request recieved")
         # create orderbook and override functions
         ob = OrderBook(symbol=symbol)
 
@@ -60,6 +61,7 @@ async def handle_request(websocket):
 
         # serialize and send response
         response = dill.dumps(payout)
+        print("Response sent")
         await websocket.send(response)
 
         # dynamic unload of user defined trading modules
