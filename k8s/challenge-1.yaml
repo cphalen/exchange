@@ -47,7 +47,7 @@ spec:
   tls:
     - hosts:
         - challenge1.edutrading.dev
-      secretName: challenge-1-tls 
+      secretName: challenge-1-tls
   rules:
     - host: challenge1.edutrading.dev
       http:
