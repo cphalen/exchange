@@ -44,6 +44,8 @@ class Simulator:
         # call the player provided open callback function
         self.bot.open()
 
+        print(self.ob)
+
         # run simulation until we reach stalemate
         while not self.tick():
             pass
