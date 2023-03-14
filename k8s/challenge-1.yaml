@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exchange-challenge-1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: exchange-challenge-1
+  template:
+    metadata:
+      labels:
+        app: exchange-challenge-1
+    spec:
+      containers:
+        - name: exchange
+          image: localhost:32000/exchange-server-local:v1
+          ports:
+            - containerPort: 8765
+          env:
+            - name: EXCHANGE_SERVER_HOSTNAME
+              value: "0.0.0.0"
+            - name: EXCHANGE_SERVER_PORT
+              value: "8765"
+            - name: EXCHANGE_SERVER_SYMBOL
+              value: "BOND"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exchange-challenge-1
+spec:
+  selector:
+    app: exchange-challenge-1
+  ports:
+    - port: 8765
+  type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: challenge-1-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: lets-encrypt-prod
+spec:
+  tls:
+    - hosts:
+        - challenge1.edutrading.dev
+      secretName: challenge-1-tls 
+  rules:
+    - host: challenge1.edutrading.dev
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: exchange-challenge-1
+              port:
+                number: 8765

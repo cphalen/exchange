@@ -7,13 +7,14 @@ import websockets
 import solution.challenge_1.trading_actions
 import solution.challenge_1.trading_bot
 
-hostname = os.environ.get("EXCHANGE_SERVER_HOSTNAME", "localhost")
-port = os.environ.get("EXCHANGE_SERVER_PORT", 8765)
+hostname = os.environ.get(
+    "EXCHANGE_SERVER_HOSTNAME", "challenge1.edutrading.dev"
+)
 username = os.environ.get("EXCHANGE_USERNAME", "user")
 
 
 def get_websocket_url():
-    return f"ws://{hostname}:{port}"
+    return f"wss://{hostname}"
 
 
 async def send_trading_bot():
