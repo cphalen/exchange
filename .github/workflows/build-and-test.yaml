@@ -67,3 +67,16 @@ jobs:
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: cphalen/exchange-server:${{ github.sha }}
 
+  deploy:
+    needs: build
+    name: Deploy new docker image and kube config on prod
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: ssh and deploy
+        run: |
+          echo $SSH_KEY > key.pem
+          chmod 500 key.pem
+          ssh -i "key.pem" ubuntu@$SSH_HOSTNAME "cd exchange && git pull && export IMAGE_TAG=${{ github.sha }} && cat k8s/* | envsubst | microk8s kubectl apply -f -"
+
