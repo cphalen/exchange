@@ -1,6 +1,6 @@
 # Exchange
 
-The exchange follows a client-server model using websockets to communicate between the two. There is some shared code in `orderbook.py` between the client and server (to keep serialization and deserialization consistent).
+The exchange follows a client-server model using websockets for communication. There is some shared code in `orderbook.py` between the client and server (to keep serialization and deserialization consistent).
 
 ## Development
 
