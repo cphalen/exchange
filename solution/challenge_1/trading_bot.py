@@ -1,6 +1,3 @@
-from solution.challenge_1.trading_actions import TradingActions
-
-
 class TradingBot:
     """
     In this class you will write callback functions that dictate how your
@@ -18,7 +15,8 @@ class TradingBot:
       - Using external Python packages in your code
     """
 
-    def __init__(self) -> None:
+    def __init__(self, actions) -> None:
+        self.actions = actions
         self.buy_price = 99
         self.sell_price = 101
 
@@ -28,8 +26,8 @@ class TradingBot:
         You can add any buy or sell orders that you want to exist on the
         orderbook at the beginning of the simulation.
         """
-        self.buy_id = TradingActions.add_buy(self.buy_price)
-        self.sell_id = TradingActions.add_sell(self.sell_price)
+        self.buy_id = self.actions.add_buy(self.buy_price)
+        self.sell_id = self.actions.add_sell(self.sell_price)
 
     def buy(self, order_id: int, amount: float) -> None:
         """
@@ -59,7 +57,7 @@ class TradingBot:
         orderbook.
         """
         if buy_order_id == self.buy_id:
-            self.buy_id = TradingActions.add_buy(self.buy_price)
+            self.buy_id = self.actions.add_buy(self.buy_price)
 
         if sell_order_id == self.sell_id:
-            self.sell_id = TradingActions.add_sell(self.sell_price)
+            self.sell_id = self.actions.add_sell(self.sell_price)

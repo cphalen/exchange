@@ -1,30 +1,19 @@
 import asyncio
-import importlib
 import os
-import sys
+import pickle
 from symbol.symbol import symbol_of_string
 
-import dill
 import websockets
 
 from server.orderbook import Direction, Order, OrderBook
 from server.simulator import Simulator
 
-hostname = os.environ.get("EXCHANGE_SERVER_HOSTNAME", "127.0.0.1")
-port = os.environ.get("EXCHANGE_SERVER_PORT", 8765)
+hostname = os.environ.get("EXCHANGE_SERVER_HOSTNAME", "0.0.0.0")
+port = os.environ.get("EXCHANGE_SERVER_PORT", 80)
 symbol = symbol_of_string(os.environ.get("EXCHANGE_SERVER_SYMBOL", "BOND"))
 debug = os.environ.get("EXCHANGE_SERVER_DEBUG", True)
 
 username = "user"
-
-
-def dynamic_module_load(module):
-    importlib.import_module(module.__name__)
-
-
-def dynamic_module_unload(module):
-    del sys.modules[module.__name__]
-    del module
 
 
 async def handle_request(websocket):
@@ -43,28 +32,19 @@ async def handle_request(websocket):
             return order.order_id
 
         # unpackage user defined trading modules
-        trading_modules = dill.loads(msg)
-        [bot_module, actions_module] = trading_modules
-
-        # dynamic load of user defined trading modules
-        dynamic_module_load(bot_module)
-        dynamic_module_load(actions_module)
+        bot = pickle.loads(msg)
 
         # override dummy add_buy and add_sell functions
-        actions_module.TradingActions.add_buy = add_buy
-        actions_module.TradingActions.add_sell = add_sell
+        bot.actions.add_buy = add_buy
+        bot.actions.add_sell = add_sell
 
         # create and run simulator
-        sim = Simulator(username, bot_module.TradingBot(), ob)
+        sim = Simulator(username, bot, ob)
         payout = sim.run()
 
         # serialize and send response
-        response = dill.dumps(payout)
+        response = pickle.dumps(payout)
         await websocket.send(response)
-
-        # dynamic unload of user defined trading modules
-        dynamic_module_unload(bot_module)
-        dynamic_module_unload(actions_module)
 
 
 async def listen():

@@ -5,7 +5,7 @@ class TradingActions:
     in your TradingBot code.
     """
 
-    def add_buy(amount: int) -> int:
+    def add_buy(self, amount: int) -> int:
         """
         Creates a buy order on the orderbook (i.e. you are buying at a certain
         price). This function returns the order_id of the new buy order that is
@@ -13,7 +13,7 @@ class TradingActions:
         """
         pass
 
-    def add_sell(amount: int) -> int:
+    def add_sell(self, amount: int) -> int:
         """
         Creates a sell order on the orderbook (i.e. you are selling at a
         certain price). This function returns the order_id of the new sell

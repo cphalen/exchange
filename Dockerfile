@@ -1,4 +1,4 @@
-FROM python:3.10.7-slim-buster
+FROM python:3.10.8-slim-buster
 
 WORKDIR /app
 
@@ -14,4 +14,4 @@ RUN poetry install
 COPY . .
 
 # start the server with parameters specified in environment variables
-CMD ["poetry", "run", "python", "-m", "server.server"]
+CMD ["poetry", "run", "python", "-u", "-m", "server.server"]

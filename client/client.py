@@ -1,11 +1,11 @@
 import asyncio
 import os
+import pickle
 
-import dill
 import websockets
 
-import client.trading_actions
-import client.trading_bot
+from client.trading_actions import TradingActions
+from client.trading_bot import TradingBot
 
 hostname = os.environ.get(
     "EXCHANGE_SERVER_HOSTNAME", "challenge1.edutrading.dev"
@@ -20,15 +20,14 @@ def get_websocket_url():
 async def send_trading_bot():
     async with websockets.connect(get_websocket_url()) as websocket:
         # serialize the trading bot
-        trading_modules = [client.trading_bot, client.trading_actions]
-        msg = dill.dumps(trading_modules)
+        msg = pickle.dumps(TradingBot(TradingActions()))
 
         # send bot over the wire
         await websocket.send(msg)
 
         # await and deserialize response
         response = await websocket.recv()
-        payout = round(dill.loads(response), 2)
+        payout = round(pickle.loads(response), 2)
 
         print("Payout for simulation: ${:0.2f}".format(payout))
 
