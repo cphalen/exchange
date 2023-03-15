@@ -18,13 +18,15 @@ class TradingBot:
       - Using external Python packages in your code
     """
 
-    def open(self, actions) -> None:
+    def __init__(self, actions) -> None:
+        self.actions = actions
+
+    def open(self) -> None:
         """
         This function is called by the simulation when the simulation begins.
         You can add any buy or sell orders that you want to exist on the
         orderbook at the beginning of the simulation.
         """
-        self.actions = actions
         pass
 
     def buy(self, order_id: int, amount: float) -> None:
