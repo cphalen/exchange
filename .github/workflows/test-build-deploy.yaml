@@ -11,6 +11,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Test CI
+        run: echo "$SSH_KEY"
+
       - name: Setup python
         uses: actions/setup-python@v1
 
